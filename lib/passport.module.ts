@@ -7,10 +7,10 @@ import {
 } from './interfaces/auth-module.options';
 
 @Module({})
-export class PassportModule {
+export class FastifyPassportModule {
   static register(options: IAuthModuleOptions): DynamicModule {
     return {
-      module: PassportModule,
+      module: FastifyPassportModule,
       providers: [{ provide: AuthModuleOptions, useValue: options }],
       exports: [AuthModuleOptions]
     };
@@ -18,7 +18,7 @@ export class PassportModule {
 
   static registerAsync(options: AuthModuleAsyncOptions): DynamicModule {
     return {
-      module: PassportModule,
+      module: FastifyPassportModule,
       imports: options.imports || [],
       providers: this.createAsyncProviders(options),
       exports: [AuthModuleOptions]

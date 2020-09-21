@@ -7,7 +7,8 @@ import {
   Optional,
   UnauthorizedException
 } from '@nestjs/common';
-import * as passport from 'passport';
+import { FastifyRequest, FastifyReply, RouteHandlerMethod } from 'fastify';
+import passport from 'fastify-passport';
 import { Type } from './interfaces';
 import {
   AuthModuleOptions,
@@ -89,18 +90,21 @@ function createAuthGuard(type?: string | string[]): Type<CanActivate> {
   return guard;
 }
 
-const createPassportContext = (request, response) => (
-  type,
-  options,
-  callback: Function
-) =>
-  new Promise((resolve, reject) =>
-    passport.authenticate(type, options, (err, user, info, status) => {
+const createPassportContext = (request, response) => {
+  return async (type, options, callback) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        request.authInfo = info;
-        return resolve(callback(err, user, info, status));
-      } catch (err) {
-        reject(err);
+        return await request.passport.authenticate(type, options, (request, response, err, user, info, status) => {
+          try {
+            request.authInfo = info;
+            return resolve(callback(err, user, info, status));
+          } catch (err) {
+            reject(err);
+          }
+        })(request, response);
+      } catch (error) {
+        reject(error);
       }
-    })(request, response, (err) => (err ? reject(err) : resolve()))
-  );
+    });
+  }
+}

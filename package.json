@@ -1,10 +1,11 @@
 {
-  "name": "@nestjs/passport",
+  "name": "@nestjs/fastify-passport",
   "version": "7.1.0",
   "description": "Nest - modern, fast, powerful node.js web framework (@passport)",
   "author": "Kamil Mysliwiec",
   "license": "MIT",
   "scripts": {
+    "prepare": "tsc -p tsconfig.json",
     "build": "rimraf dist && tsc -p tsconfig.json",
     "format": "prettier --write \"lib/**/*.ts\"",
     "lint": "eslint 'lib/**/*.ts' --fix",
@@ -14,16 +15,20 @@
     "prerelease": "npm run build",
     "release": "release-it"
   },
+  "dependencies": {
+    "fastify": "^3.0.0",
+    "passport": "^0.4.1"
+  },
   "peerDependencies": {
     "@nestjs/common": "^6.0.0 || ^7.0.0",
-    "passport": "^0.4.0"
+    "fastify-passport": "https://github.com/RobertLowe/fastify-passport.git"
   },
   "devDependencies": {
+    "typescript": "4.0.3",
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-angular": "11.0.0",
     "@nestjs/common": "7.4.4",
     "@types/node": "11.15.0",
-    "@types/passport": "1.0.4",
     "@typescript-eslint/eslint-plugin": "4.1.1",
     "@typescript-eslint/parser": "4.1.1",
     "eslint": "7.9.0",
@@ -31,13 +36,12 @@
     "eslint-plugin-import": "2.22.0",
     "husky": "4.3.0",
     "lint-staged": "10.4.0",
-    "passport": "0.4.1",
+    "fastify-passport": "https://github.com/RobertLowe/fastify-passport.git",
     "prettier": "2.1.2",
     "release-it": "14.0.3",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
-    "rxjs": "6.6.3",
-    "typescript": "4.0.3"
+    "rxjs": "6.6.3"
   },
   "lint-staged": {
     "*.ts": [

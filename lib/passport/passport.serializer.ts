@@ -1,16 +1,25 @@
-import * as passport from 'passport';
+// import { Injectable, Scope, Inject } from '@nestjs/common';
+// import { REQUEST } from '@nestjs/core';
+import { FastifyRequest } from 'fastify';
 
-export abstract class PassportSerializer {
-  abstract serializeUser(user: any, done: Function);
-  abstract deserializeUser(payload: any, done: Function);
+import passport from 'fastify-passport';
 
+// @Injectable({ scope: Scope.REQUEST })
+export abstract class FastifyPassportSerializer {
+  abstract registerUserSerializer(payload: any, request: FastifyRequest);
+  abstract registerUserDeserializer(payload: any, request: FastifyRequest);
+
+  // constructor(@Inject(REQUEST) private request: FastifyRequest) {
   constructor() {
     const passportInstance = this.getPassportInstance();
-    passportInstance.serializeUser((user, done) =>
-      this.serializeUser(user, done)
+    // passportInstance.registerUserSerialize((user: any, request: FastifyRequest)=>{
+    // return Promise.resolve();
+    // });
+    passportInstance.registerUserSerializer((payload, done) =>
+      this.registerUserSerializer(payload, done)
     );
-    passportInstance.deserializeUser((payload, done) =>
-      this.deserializeUser(payload, done)
+    passportInstance.registerUserDeserializer((payload, done) =>
+      this.registerUserDeserializer(payload, done)
     );
   }
 
